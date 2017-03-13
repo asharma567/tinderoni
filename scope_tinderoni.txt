@@ -1,0 +1,110 @@
+Scope for tinderoni
+-------------------
+
+- Mine data 
+	
+	- What data do we need?
+		
+		- distance
+		- age
+		- name
+		- schools
+		- jobs
+		
+		text
+		----
+		- Profile blog
+		- especially height
+
+		images
+		-----
+		- positive labels for sure
+			- analysis
+				- keep an eye fr Linnette and see if she's an outlier or does she blend in
+			- training a classifier
+			- how many images do I need? *
+			- what resolution? *
+		- negative labels? 
+			- anlaysis purposes
+
+- Which classifiers? *
+	- Facenet
+	- convnet
+
+- Analysis
+	What the groups of pictures that I like? Do they cluster distinctly? Do I have a type?
+		- t-sne on corpus of positives
+		This approach might not work well because it's not indicative of the one pic that got me to swipe, but it does say something about the people.
+
+
+	What the groups of pictures are that I don't like? Do they cluster distinctly?
+		- t-sne on corpus of negatives
+	
+	Is there any delineation between the two groups?
+		- t-sne on positives and negatives
+
+	Can crop out the faces and see if there are any patterns?
+		what tools do I need for this? *
+
+	If I make my neighborhood new york versus local do the girl's get cuter?
+		- pull down 1000 pictures from each and see which ones are more attrative
+			how do you rate attractives?
+				- either from a classifier or from human inspection. though a classifier is much more rigorous
+
+			* take into account distance
+			Are girls that are further away, way cuter?
+
+			What's the average distance of each category?
+
+	What are the topics in the bio?
+	What's the average height?
+	How often do they post hieght
+	What's the average guy height?
+	Which ethnicities are on it the most?
+	Are two cities quite different from one another?
+	Is there a bias for seasonality
+	Are the girls on other apps cuter?
+		I need to pull down happn
+		OKC already has their thing made
+	Rate of swiping right
+
+- What's an objective measure for what is considered attractive?
+
+
+- App
+	1) pull down nearest matches
+	2) classify which ones you said yes to automonously
+		- is it important to say dislike in tinder?
+
+tasks
+-----
+1) Research 
+
+	- How do you objectively measure attractiveness visually? (2 hours)
+		- 
+	- What are popular ways for topics modeling? (6 hours)
+		- send Andy a message.
+		- review Brentons thing
+			- send him a message about 
+				- topic modeling on seasons
+				- resources for topic modeling
+				- influx of users by seasons
+
+	- Facenet: (1.5 hour)
+		How to crop out the face? 
+		What resolution
+		How many images do I need
+		Will I need AWS to support the training
+
+	- What do I need to do mine form Happn? OKC? (30 mins)
+	- other computer vision models? (30 mins)
+
+- Setup infrastructure to mine data (30 mins)
+	Append these fields to CSV which is pipe delimited
+	- start collecting bio, 
+	- distance, 
+	- Age
+	- School
+	- Jobs
+	- names from Tinder
+
