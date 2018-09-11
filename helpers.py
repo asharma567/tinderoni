@@ -2,6 +2,7 @@ import re
 import robobrowser
 from IPython.display import Image
 from IPython.display import display
+import joblib
 import time
 
 MOBILE_USER_AGENT = "Mozilla/5.0 (Linux; U; en-gb; KFTHWI Build/JDQ39) AppleWebKit/535.19 (KHTML, like Gecko) Silk/3.16 Safari/535.19"
@@ -27,33 +28,67 @@ def get_access_token(email, password):
 
     return access_token
 
-def like_my_picks(user_dict, my_top_picks, super=False):
+def like_my_likes(user_dict, my_top_likes, super=False, dislike=False):
     
-    for index, user_name_tuple in user_dict.iteritems():
+    for index, user_name_tuple in user_dict.items():
         name, user_object_from_pynder = user_name_tuple
-        if index in my_top_picks:
+        
+        
+        if index in my_top_likes:
             if super:
-                print user_object_from_pynder.superlike()
+                print( user_object_from_pynder.superlike())
             else:
-                print user_object_from_pynder.like()
+                if not dislike:
+                    print( user_object_from_pynder.like())
+                else:
+                    print( user_object_from_pynder.dislike())
 
 
-def dump_images_of_my_picks(user_dict, my_top_picks, path_to_directory='tinder_pics/'):
+def dump_images_of_my_likes(user_dict, my_top_likes, path_to='tinder_pics_likes/'):
     
-    for index, user_name_tuple in user_dict.iteritems():
+    for index, user_name_tuple in user_dict.items():
         name, user_object_from_pynder = user_name_tuple
-        if index in my_top_picks: 
-            _write_to_jpeg(user_object_from_pynder.photos, name, path_to_directory)
+        if index in my_top_likes: 
+            _write_to_jpeg(user_object_from_pynder.photos, name, path_to)
     return None
 
-def _write_to_jpeg(list_of_user_photos, name_of_user, path_to_directory):
+def dump_objects_of_my_likes(user_dict, my_top_likes, path_to):
+    try:
+        list_of_users_objs = joblib.load(path_to)
+    except:
+        list_of_users_objs = []    
+    
+    for index, user_name_tuple in user_dict.items():
+        name_of_user, user_object_from_pynder = user_name_tuple
+        
+        join_w_images_key = str(int(time.time())) + '_' + name_of_user + '_' + str(index)
+        prefs = [
+            user_object_from_pynder.name,
+            user_object_from_pynder.age,
+            user_object_from_pynder.schools,
+            user_object_from_pynder.bio,
+            user_object_from_pynder.jobs,
+            user_object_from_pynder.distance_km, 
+            len(user_object_from_pynder.common_connections),
+            user_object_from_pynder.instagram_username,
+            join_w_images_key
+        ]
+
+        if index in my_top_likes: 
+            list_of_users_objs.append(prefs)
+            joblib.dump(list_of_users_objs, path_to)
+
+    return None
+
+
+def _write_to_jpeg(list_of_user_photos, name_of_user, path_to):
     for idx, photo in enumerate(list_of_user_photos):
         filename_str = str(int(time.time())) + '_' + name_of_user + '_' + str(idx) + '.jpeg'
-        with open(path_to_directory + filename_str, 'wb') as f:
+        with open(path_to + filename_str, 'wb') as f:
             try:
                 f.write(Image(photo, width=600, height=600).data)
             except:
-                print 'error writing the pic for: ' + name_of_user 
+                print( 'error writing the pic for: ' + name_of_user )
                 continue
 
 def show_imgs(list_of_images):
@@ -61,11 +96,11 @@ def show_imgs(list_of_images):
         display(Image(pic, width=300, height=300))
     return None
 
-def dump_text_data_of_my_picks(user_dict, my_top_picks, path_to_file='tinder.csv'):
+def dump_text_data_of_my_likes(user_dict, my_top_likes, path_to='tinder_likes.csv'):
 
-    for index, user_name_tuple in user_dict.iteritems():
+    for index, user_name_tuple in user_dict.items():
         
-        if index in my_top_picks: 
+        if index in my_top_likes: 
             
             name, user_object_from_pynder = user_name_tuple
             
@@ -76,11 +111,11 @@ def dump_text_data_of_my_picks(user_dict, my_top_picks, path_to_file='tinder.csv
                     user_object_from_pynder.schools,
                     user_object_from_pynder.jobs,
                     name, 
-                    path_to_file
-                    )
+                    path_to
+                )
     return None
 
-def _write_to_csv(distance, age, bio, schools, jobs, name_of_user, path_to_file):
+def _write_to_csv(distance, age, bio, schools, jobs, name_of_user, path_to):
 
     write_time = str(int(time.time()))
     try:
@@ -94,13 +129,13 @@ def _write_to_csv(distance, age, bio, schools, jobs, name_of_user, path_to_file)
             write_time
             ])
     except:
-        print schools, jobs        
-    with open(path_to_file, 'ab') as f:
+        print( schools, jobs        )
+    with open(path_to, 'ab') as f:
         try:
             f.write(a_line)
             f.write('\n')
         except:
-            print 'error writing the text for: ' + name_of_user 
+            print( 'error writing the text for: ' + name_of_user )
             
     return None
 
@@ -116,7 +151,7 @@ if __name__ == '__main__':
     users={}
     for index, user in enumerate(session.nearby_users()):
         
-        print index, user.name
+        print( index, user.name)
         users[index] = (user.name, user)
         show_imgs(user.photos)
         
@@ -125,7 +160,7 @@ if __name__ == '__main__':
     list_of_likes = [1, 2, 3]
 
     #fix the None error
-    dump_images_of_my_picks(users, list_of_likes, 'test_directory/')
-    dump_text_data_of_my_picks(users, list_of_likes, 'test_directory/')
-    like_my_picks(users, list_of_likes)
+    dump_images_of_my_likes(users, list_of_likes, 'test_directory/')
+    dump_text_data_of_my_likes(users, list_of_likes, 'test_directory/')
+    like_my_likes(users, list_of_likes)
     

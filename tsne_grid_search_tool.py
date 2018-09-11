@@ -93,7 +93,7 @@ def save_plots_with_params(dics, fname):
         
         #print plot for every configuration
         best_params, embeddings, error = vals
-        print best_params, perp, error
+        print (best_params, perp, error)
         plt.scatter(embeddings[:,0], embeddings[:,1], alpha=.2, color='red')
         plt.savefig(str(perp) + fname)
         plt.close()
@@ -103,4 +103,4 @@ if __name__ == '__main__':
     s_curve, classes = datasets.make_s_curve(n_samples=300, noise=0.0)
     
     dics = find_best_tsne_plot(s_curve, verbose=True)
-    save_plots_with_params(dics,'delete')
+    save_plots_with_params(dics,'s_curve')
