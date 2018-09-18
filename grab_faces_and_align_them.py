@@ -3,12 +3,8 @@ todos
 -----
 - handle errors, have it display the type of exception
 - handle multiple people, it does it just by skipping it right now
-- figuring out gender
 - learn how to use logger
 
-DONE
-- run it again to test it out
-- error handling
 '''
 
 from imutils.face_utils import FaceAligner
@@ -25,7 +21,7 @@ import imutils
 import matplotlib.pyplot as plt
 
 
-PREDICTOR = dlib.shape_predictor('/Users/ajay/Downloads/face-alignment/shape_predictor_68_face_landmarks.dat')
+PREDICTOR = dlib.shape_predictor('face-alignment/shape_predictor_68_face_landmarks.dat')
 FA = FaceAligner(PREDICTOR, desiredFaceWidth=256)   
 
 def aligner(face_pic, gray, box):   
@@ -36,7 +32,7 @@ def aligner(face_pic, gray, box):
 def get_bounding_box_face(raw_image):
     
     rgb = cv2.cvtColor(raw_image, cv2.COLOR_BGR2RGB)
-    boxes = face_recognition.face_locations(image,model='cnn')
+    boxes = face_recognition.face_locations(image, model='cnn')
     
     return boxes
 
@@ -56,24 +52,40 @@ def crop_out_face(image, box):
     return imutils.resize(image[y:y + h, x:x + w], width=256)
 
 
-def save_to_drive(img_path, aligned_face): 
+def save_to_drive(img_path, aligned_face, save_to_folder): 
     file_name = img_path.split('/')[1]
     cv2.imwrite(
-        'tinder_pics_likes_faces_deduped/' + file_name.strip('.jpeg') + '_face.png',
+        save_to_folder + '/' + file_name.split('.')[0] + '_face.jpg',
         aligned_face 
         )
-    print ('saved: ' + file_name)
+
+    print ('saved: ' + save_to_folder + '/' + file_name.split('.')[0] + '_face.jpg')
     return None
 
-def iterate_through_folder(folder_name='tinder_pics_likes_deduped'):
+def multithread_map(fn, work_list, num_workers=50):
+    from concurrent.futures import ThreadPoolExecutor
+    '''
+    spawns a threadpool and assigns num_workers to some 
+    list, array, or any other container. Motivation behind 
+    this was for functions that involve scraping.
+    '''
+    with ThreadPoolExecutor(max_workers=num_workers) as executor:
+        return list(executor.map(fn, work_list))
+
+
+def iterate_through_folder(folder_name):
     imagePaths = list(paths.list_images(folder_name))
     # imagePaths_saved_already = list(paths.list_images('tinder_pics_likes_faces'))
     
-    for i, image_path in enumerate(imagePaths):
-        print (i/float(len(imagePaths)))
-        main(image_path)
+    # for i, image_path in enumerate(imagePaths):
+    #     print (i / float(len(imagePaths)))
+    #     main(image_path)
+
+    multithread_map(main, imagePaths)
 
 def main(img_path):
+
+    root_folder = img_path.split('/')[0]
 
     try:
         image = cv2.imread(img_path)
@@ -84,14 +96,14 @@ def main(img_path):
             box = boxes[0]
             faceOrig = crop_out_face(image, box)
             aligned_face = aligner(image, image, rects[0] )
-            save_to_drive(img_path, aligned_face)
+            save_to_drive(img_path, aligned_face, root_folder + '_faces')
         
     except:
         print ('error -- ', img_path)
 
     
 if __name__ == "__main__":
-    iterate_through_folder('tinder_pics_likes_deduped')
+    iterate_through_folder('CF_ALL')
     # main('tinder_pics_likes/1526004657_Dian_5.jpeg')
 
 

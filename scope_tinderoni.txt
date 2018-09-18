@@ -1,6 +1,43 @@
 Scope for tinderoni
 -------------------
 
+use-cases
+---------
+- talent scout
+- self-esteem booster
+- data insights for daters people
+	- self-awareness of the types of demographics who appeal to me
+	- the type of people I'm interested in
+- creating a simple auto-swiper
+* which star do you look most similar to? Do i actually look most similar to george clooney?
+Could also use my RT recommender for this.
+
+
+todos
+----
+- see what clusters I get with HDScAN?
+- run on likes and dislikes? does it find fat girls?
+- understand what's going on with the ecoding and see if we could extract features from them
+- hypothesis tests: see where raquel lands among the set of models and uggs, lets find a fat girl and see what happens? 
+
+- inspecting the montages of the hots and nots, what main pattern can we see? same for tsne plots. audrey hepburn and madonna? Why are some hots in the nots and vice versa? Is there a way to extract these features? Where would mom fall? where would raquel fall? where would I fall?
+- organize folder
+- play around with the perplexity at 10: it seems to be cluster like pictures better at 10 than it does at 30 but it's also more splayed out and scattered losing it's ellipsodal shape. that website claims that tsne sucks for doing this but I see it more like highlighting a pair of similar points instead for visual inspection instead of having everything look equidistant. take a glance at the jpegs in the tsne trial folder. The associations with perp 10 look much more clear
+
+- come-up with a principled way to examine goodness of approach e.g. pre-determined outliers where do they lie, does it catch all of the same people, I could literally go through the entire set and swipe on them again effectively relabel them and make a roc-auc curve.
+
+DONE
+- examine cluster and try to optimize the cluster.. consider level set tree, t-sne, etc. perhaps it might even make sense to send out an email to adrian
+- train the model on facial beauty and try to get the one on fatness
+- faces need to be aligned
+- do we need to encode the faces into a feature space before we feed them to a clustering algorithm? check by flatten rgb and using it on the faces to see if it yields similar results
+- also use HDSCANN
+- t-SNE on the encodings
+- how can i understand global structure
+- validation of a clustering algorithm can be validated by the linkage to the names of the files and clusters e.g. cluster_1 corresponding file names should have the same name.
+ 
+
+
 - Mine data 
 	
 	- What data do we need?
@@ -32,9 +69,14 @@ Scope for tinderoni
 	- convnet
 
 - Analysis
+	What are the most frequent girl names?
+
 	What the groups of pictures that I like? Do they cluster distinctly? Do I have a type?
 		- t-sne on corpus of positives
 		This approach might not work well because it's not indicative of the one pic that got me to swipe, but it does say something about the people.
+
+		- positive & negative clusters and use a classifier on their profiles
+
 
 
 	What the groups of pictures are that I don't like? Do they cluster distinctly?
@@ -44,7 +86,13 @@ Scope for tinderoni
 		- t-sne on positives and negatives
 
 	Can crop out the faces and see if there are any patterns?
-		what tools do I need for this? *
+		https://www.pyimagesearch.com/2018/07/09/face-clustering-with-python/
+			- facial detection via CNN or Histogram of Oriented Gradients (HOG)
+			- then it encodes the cropped face
+			- dbscann to cluster the output
+		
+		could also train on the attractiveness paper dataset and run the convnet through the images since it possess images of white women. However, lets be speculative.
+
 
 	If I make my neighborhood new york versus local do the girl's get cuter?
 		- pull down 1000 pictures from each and see which ones are more attrative
@@ -55,10 +103,17 @@ Scope for tinderoni
 			Are girls that are further away, way cuter?
 
 			What's the average distance of each category?
-
+	What are there facial expressions?
+	What are they're ages?
+		- plot histogram: positive and negative labels
+		- 
+	What are they're hair color?
 	What are the topics in the bio?
 	What's the average height?
-	How often do they post hieght
+	How often do they post hieght?
+	Where do they live?
+		 Perhaps this would give you insight on where to move next?
+
 	What's the average guy height?
 	Which ethnicities are on it the most?
 	Are two cities quite different from one another?
@@ -67,6 +122,17 @@ Scope for tinderoni
 		I need to pull down happn
 		OKC already has their thing made
 	Rate of swiping right
+	Is there any patterns in the meta data?
+		- how to extract meta data from the image
+
+	Could also take a mirror and check for symmetry by taking the euclidean distance of each photo.
+		- would have to fix for images which are expressionless e.g. eye-wink
+
+	How selective am I?
+	- suppose a significantly large portion of a single's are on tinder. Meaning it's somewhat representative of the girl's I'd see at an average bar or some venue or on the street. How often than not am I saying yeah she's cute? Obviously this makes some wild assumptions to people you see at venues like bars / clubs, they tend to narrow down a particular type of demographic.  That said, the population on tinder doesn't  focus on a particular demographic as much as a bar does, however you have settings to a couple miles radius in West Village new york. i.e. tinder has a wider audience but it doesn't do some narrowing.
+
+	Anyways, the main point speaks to your selectivity: Am I being realistic with my desires? Am I overappraising my self-worth? Am I not being selective enough, casting too wide a net?
+
 
 - What's an objective measure for what is considered attractive?
 
@@ -78,10 +144,22 @@ Scope for tinderoni
 
 tasks
 -----
-1) Research 
+
+
+1) can I link the images and the pictures?
+ 
+
+2) 
+
+
+
+2) Research 
 
 	- How do you objectively measure attractiveness visually? (2 hours)
-		- 
+		
+		- Can i use conv nets to uncover latent patterns within the pictures?
+		- How figure out patterns after we have all this data?
+	
 	- What are popular ways for topics modeling? (6 hours)
 		- send Andy a message.
 		- review Brentons thing
@@ -91,7 +169,8 @@ tasks
 				- influx of users by seasons
 
 	- Facenet: (1.5 hour)
-		How to crop out the face? 
+		How to crop out the face?
+			https://github.com/opencv/opencv
 		What resolution
 		How many images do I need
 		Will I need AWS to support the training
@@ -107,4 +186,58 @@ tasks
 	- School
 	- Jobs
 	- names from Tinder
+- can i reiterate on the above? i.e. look at the information collected and see what we could clean from it. All while continuing to collect
+- fix the error: KeyError: 'id' 
+- organize folders
+- make a function to collect likes and dislikes
+- start collecting swipes
+- make a last year folder
+- How many images do I need?
 
+ideas
+----
+- train the model on my pics
+- to show a scatter plot of the images just censor the eyes to avoid identification
+- object detection within the photos
+	https://techcrunch.com/2017/06/16/object-detection-api/
+- fat person detector on the positives and negatives
+	https://thestack.com/big-data/2017/03/10/computer-vision-research-aims-to-identify-overweight-people-from-social-media-face-photos/
+
+resource
+--------
+https://www.oscaralsing.com/automated-tinder-using-artificial-intelligence/
+https://en.wikipedia.org/wiki/List_of_datasets_for_machine_learning_research#Image_data
+https://github.com/awesomedata/awesome-public-datasets#imageprocessing
+https://distill.pub/2017/feature-visualization/
+
+
+random qs
+----
+is t-SNE no longer the best clustering algo?
+
+
+
+notes
+----
+Most clustering algos are off shoots of k-means which is one of the first algos. Easy to interpret and widely available and fast. However it sucks at actually finding clusters, it assumes a globular shape and often misclassify noise as a part of a cluster... It's actually not even a clustering algorithm it just partitions data i.e. it segments the space the data lives in. We also have to specify the number k before hand which could be tricky. 
+
+Agglomerative, spectral are off shoots of k-means but graph based and we don't have to pre determine k. But they still suck at clustering the data.. i.e. they all fragment.
+
+PS. Stability of a cluster is an important point. Can it reproduce reusults upon reruns.
+
+Dbscan picks up the weaknesses of k-means in the context of performance, it segments the data... It's just weak because of epsilon which hdbscan chooses for you. 
+
+ask adrian
+How can I an understanding of the cluster's global structures i.e. how they relate to one another. 
+
+Cluster validation on image data is pretty easy, given it's visual.
+
+lets see if the clustering algos can distinguish between race of people, we could determine that as it's a goodness. 
+
+Getting global structure using 
+using soft assignment to a cluster perhaps might yield a better picture from a global perspective
+
+Also lets see what the scatter plot looks like
+
+http://archive.ics.uci.edu/ml/datasets/cmu+face+images
+http://www.robots.ox.ac.uk/~vgg/data/vgg_face/

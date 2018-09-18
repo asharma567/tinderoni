@@ -1,3 +1,7 @@
+'''
+- make this into an api
+'''
+
 from sklearn.manifold import TSNE
 from matplotlib import pyplot as plt
 from tsne_grid_search_tool import find_best_tsne_plot, save_plots_with_params
@@ -155,14 +159,15 @@ def main(path, save_fname, save_plots_fname):
     
     
     #grid search needs to be dropped in here
-    params_dic = find_best_tsne_plot(arr_pics_feature_matrix)
-    save_plots_with_params(params_dic, save_plots_fname)
+    # params_dic = find_best_tsne_plot(arr_pics_feature_matrix)
+    # save_plots_with_params(params_dic, save_plots_fname)
     
     tsne_embeddings = TSNE().fit_transform(arr_pics_feature_matrix)
     
     plot_data = image_scatter_plot(
                 tsne_scatter_plot=tsne_embeddings, 
-                images=X
+                images=X,
+                res=5000
             )
 
     print(plot_data.shape)
@@ -196,7 +201,7 @@ if __name__ == '__main__':
     # )
 
     main(
-        path='/Users/ajay/Desktop/project_prototypes/tinderoni/tinder_pics_likes_faces_deduped/*', 
-        save_fname='tinder_faces_all.jpeg',
-        save_plots_fname='tinder_faces_all'
+        path='CF_ALL_faces/*', 
+        save_fname='CF_ALL_faces.jpeg',
+        save_plots_fname='CF_ALL_faces'
     )

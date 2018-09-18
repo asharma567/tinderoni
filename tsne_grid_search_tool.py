@@ -1,14 +1,14 @@
+'''
+todo
+----
+- use class structure and replace the global variable feature_M
+'''
 from sklearn.manifold import TSNE
 from sklearn import datasets
 import matplotlib.pyplot as plt
 import pandas as pd
 from concurrent.futures import ThreadPoolExecutor
 
-'''
-todo
-----
-- use class structure and replace the global variable feature_M
-'''
 
 grid_search_params = {
     
