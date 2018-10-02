@@ -11,11 +11,77 @@ use-cases
 - creating a simple auto-swiper
 * which star do you look most similar to? Do i actually look most similar to george clooney?
 Could also use my RT recommender for this.
+- if you were a movie producer and you were looking for a cast member
+
+Have you ever had a crush on a girl? or would you care to see how your past partners line-up to your current set of likes?
+- Use the recommender
+
+
+What would be even MORE interesting is to examine the set of people that actually match with you and distinguish those people from the broader group?
+- However, I wouldn't be too hard on yourself. This would be a fun insightful exercise but i don't match. There are lots of variables in place other than they just don't find me attractive.
+
+
+
 
 
 todos
 ----
-- see what clusters I get with HDScAN?
+Learn how to spin up an AWS cluster and do the actions below:
+
+#get only the first pic from dislikes DONE
+
+#take the first face from tinder_pics_likes_faces_deduped DONE
+
+#label the likes/dislikes and umap, see if they're different from one another
+
+#hdbscan / umap for CF_males and
+#add stars to this
+#inspect imdb set and make recommender
+
+#try clustering with GMM
+
+#try cosinels DONE
+
+
+
+
+
+dislikes
+------
+- extract faces and align DONE
+- get only the first photo DONE
+- dedupe; spin up a big cluster and do it 
+- encode; find an easy way to provision the cluster; try EMR route
+
+
+likes
+------
+- get only the first photo
+- encode
+
+
+likes (from last year)
+------
+- dedupe
+- extract faces and align
+- get only the first photo
+- encode
+
+do the dissimilarity for the AF and CFs, TSNE
+
+- which start is raq closest to?
+
+
+CM dataset notes
+-----
+
+- get photos of mike and jamie and do the same exercise
+
+note cm688 is an indian guy
+
+*if i wanted to choose a good face shot of myself I'd iterate through my reel and choose the ones that falls in the same quadrant as the stars
+- check if the tsne plots were done on the face and not just the encodings of the entire pic
+- see what clusters I get with HDScAN? DONE
 - run on likes and dislikes? does it find fat girls?
 - understand what's going on with the ecoding and see if we could extract features from them
 - hypothesis tests: see where raquel lands among the set of models and uggs, lets find a fat girl and see what happens? 
@@ -69,6 +135,9 @@ DONE
 	- convnet
 
 - Analysis
+	How many group photos on average does each person have?
+		this probably not good for figuring who you are
+
 	What are the most frequent girl names?
 
 	What the groups of pictures that I like? Do they cluster distinctly? Do I have a type?
@@ -241,3 +310,150 @@ Also lets see what the scatter plot looks like
 
 http://archive.ics.uci.edu/ml/datasets/cmu+face+images
 http://www.robots.ox.ac.uk/~vgg/data/vgg_face/
+
+Potential audience and directional notes from quora
+------------------
+How the encoding works for Facial Recognition vs FaceNet (cutting edge)?
+	- Facial recognition quick overview 
+	ResNet-34 
+	the network has already been trained to create 128-d embeddings on a dataset of ~3 million images.
+	- Facenet's supposed to be the best out there and probably should be used in the final version of this. But it's for a later iteration.
+
+Best way to Dl images?
+	- bing search api from pyimagesearch
+
+use-cases
+STOP TOILET PAPER THIEVES
+- authentication, like a fingerprint... but there's not touching involved, garauntees uniqueness in this case
+- pet identification if it's lost
+- customization, say if you hop into a car and adjusts your seat, mirrors, etc
+- image touch-ups and corrections
+- VR could put me in a whole new working environment 
+- Banks and ATMS could definitely use facial recognition
+- Concentration levels of the face
+- Given my face, can i figure out which faces I'm attracted to the most? (figure out where my face cluster)
+- Are the people happy / sad?
+- shoplifting, general happiness or mood of shoppers
+- lie detection
+- physical abuse
+- payments
+- Pricing and anything that uses human eye inspection
+- Is my cut infected?
+- Nude detection
+- Self driving cars
+
+features
+-------
+- angry, 
+- sad, 
+- happy
+
+
+My favorite pornstars, recommendor
+
+- Don't rush: to be original you don't have to be first, you just have to be different and better. more time to expand creative process thought
+	- don't ever self-doubt, it's the antithesis to self-confidence. 
+		- always isolate to the specific event
+	- first movers often fail the most: napster, myspace, altavista
+
+Quora
+======
+- There definitely was a correlations between the most thoughtful answers to popular questions
+
+What are the best Tinder hacks?
+https://www.quora.com/What-are-the-best-Tinder-hacks
+The girls who were writing boasted highest views, naturally women are the most concerned with relationships.
+
+I should offer suggestions, because what the popular views of quoro show people want to learn: experiment around most importnatly - this is like an arms race and behooves you to stay uptodate, see what other guys are doing after you create a new profile of the opposite sex and do something better than them. e.g. create interesting photoshopped images. Answers and hacks are constantly bubbling up and people are constantly adapting to them as such, good ol fashioned trial and error is the only way to continually stay ahead of the pack.
+
+How often do you find yourself focusing on what you lack when it comes to your dating success( or there lack of)?
+- Like only if I was taller, then I'd get more matches, only if I was x,y,z then these are some interesting opportunities to experiment with and remember when you're a new person, you're profile will automatically get shown more.
+
+Know your customer, girls.
+Look at their bios and read about what they want in a man and see if you can cater to it. ( this tough this assumes they're aware of what they want, girls are always saying shit like they want a nice and end-up with the badboy), but it's worth a shot.
+
+More matches isn't necessarily a good thing, polarization
+
+* I should do a clustering exercise on bios
+
+what was the success rate of me matching with any of these people?
+Not sure, that wasnt a part of the exercise but very low and I was only interested in finding my taste for this very reason. (https://www.quora.com/Am-I-ugly-if-I-can-t-get-matches-on-Tinder-Because-I-have-been-told-my-pictures-are-nice-but-I-have-been-on-Tinder-for-3-weeks-and-only-have-1-match). I know it's driven by the elo-score or whatever but in either case, it's too damn time consuming and my odds IRL are much better.
+
+What are the universal laws of attraction?
+Men one's that are more concerned with looks, as such the article will probably cater to men however there's a sense of individual expression through photos, afterall they're worth a 1000 words. 
+
+Suggestions on where to go based on your use case? to flat out say Tinder < Bumble << OKC is kind of short-sighted to their individual use-case. 
+
+PACKAGES
+========
+features on images?
+
+	emotions
+	https://github.com/oarriaga/face_classification?utm_source=mybridge&utm_medium=blog&utm_campaign=read_more
+
+	real and fake smile CNN
+
+	https://zapdf.com/discriminating-real-from-fake-smile-using-convolution-neural.html
+
+	- What do people say about it's attractiveness rating in terms of labels
+	- Measuring the true impact of a movie scene or work of art
+
+	This is just the beginning, to using ML to empathetical insight to images... that might be the next major step.
+
+	- BMI
+
+
+
+
+What are the most popular questions & answers in online dating?
+
+Topic Online Dating
+	How come that girls doesn't reply when you message them on Okcupid or Tinder?
+	- a clear reason not to take online dating seriously; it's so cumbersome. the challenge deosn't end at endlessly swiping and matching but then getting them to reply, a phone number, then eventually a date. But it 's a great way to figure out taste.
+
+	What are some marketing techniques men can employ when dating online?*
+	- How to better thyself
+	- Look-up the hacks and see if I could dive deeper here
+	- 
+
+	What is the hardest thing about achieving success in online dating?
+	- What the pitfalls / challenges of online dating? Why is shared interest not enough? Why aren't photos enough?
+	- effort
+	- catfishing
+
+Topic Tinder
+
+
+	Is everyone on Tinder basically a loser because they have to go online to find dates?
+	- emphasize the importnace of online dating, FB getting into space, Bumble is to go IPO, hinge got acquired. And look at the charts.
+
+	What are your "definite NO's" while swiping on Tinder? 
+	- Are you aware of them and why?
+	- You have some sort of nonsense about women in your bio. This includes: demanding to pay for the first date, talking about how women who sleep with you are easy, “not looking for sluts”, calling girls “bitches”, and so on. Ew.
+
+	Why should a guy bother with Tinder if he does not have a six pack and grade A looks?
+	- Tinder is still the dominant dating app out there and it's easy to get a good idea.
+		
+
+	I want a serious relationship. Should I use eHarmony, OK Cupid, or Tinder?
+
+	Does Tinder work without paying the fee?
+
+	What are the best Tinder hacks?
+What are the most popular questions & answers in dating?
+
+
+Dating is hard, there are girls I have nothing in common with but I want to have sex with them and there are girls I have a lot in common with but I don't want to have sex with them at all: how can we find the intersection.
+
+
+aws tools
+=========
+sage-maker
+https://github.com/awslabs/amazon-sagemaker-examples/blob/master/advanced_functionality/mxnet_mnist_byom/mxnet_mnist.ipynb
+https://docs.aws.amazon.com/sagemaker/latest/dg/tf-examples.html
+https://github.com/apache/incubator-mxnet/tree/master/example/image-classification
+https://docs.aws.amazon.com/sagemaker/latest/dg/image-classification.html
+
+face-to_bmi
+-----------
+https://towardsdatascience.com/how-attractive-are-you-in-the-eyes-of-deep-neural-network-3d71c0755ccc

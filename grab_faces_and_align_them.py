@@ -75,11 +75,6 @@ def multithread_map(fn, work_list, num_workers=50):
 
 def iterate_through_folder(folder_name):
     imagePaths = list(paths.list_images(folder_name))
-    # imagePaths_saved_already = list(paths.list_images('tinder_pics_likes_faces'))
-    
-    # for i, image_path in enumerate(imagePaths):
-    #     print (i / float(len(imagePaths)))
-    #     main(image_path)
 
     multithread_map(main, imagePaths)
 
@@ -87,23 +82,22 @@ def main(img_path):
 
     root_folder = img_path.split('/')[0]
 
-    try:
-        image = cv2.imread(img_path)
-        image = imutils.resize(image, width=800)
-        boxes, rects = get_bounding_box_face2(image)
+    # try:
+    image = cv2.imread(img_path)
+    image = imutils.resize(image, width=800)
+    boxes, rects = get_bounding_box_face2(image)
+    
+    if len(boxes) == 1:
+        box = boxes[0]
+        faceOrig = crop_out_face(image, box)
+        aligned_face = aligner(image, image, rects[0] )
+        save_to_drive(img_path, aligned_face, root_folder + '_faces')
         
-        if len(boxes) == 1:
-            box = boxes[0]
-            faceOrig = crop_out_face(image, box)
-            aligned_face = aligner(image, image, rects[0] )
-            save_to_drive(img_path, aligned_face, root_folder + '_faces')
-        
-    except:
-        print ('error -- ', img_path)
+    # except:
+        # print ('error -- ', img_path)
 
     
 if __name__ == "__main__":
-    iterate_through_folder('CF_ALL')
-    # main('tinder_pics_likes/1526004657_Dian_5.jpeg')
-
+    iterate_through_folder('friends_and_myself_pics')
+    
 

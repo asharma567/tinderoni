@@ -5,12 +5,13 @@ import numpy as np
 from imutils import paths
 import cv2
 
+FOLDER_NAME = 'tinder_pics_dislikes_firsts'
 
 def save_to_drive(aligned_face, path): 
 
     file_name = path.split('/')[1]
     cv2.imwrite(
-        'tinder_pics_likes_deduped/' + file_name,
+        FOLDER_NAME + '_deduped/' + file_name,
         aligned_face 
         )
     print ('saved: ' + file_name)
@@ -47,5 +48,6 @@ def iterate_through_folder(folder_name):
 
     return images, imagePaths
 
-photos, imagePaths = iterate_through_folder('tinder_pics_likes')
+photos, imagePaths = iterate_through_folder(FOLDER_NAME)
+    
 dedupe(photos, imagePaths)
