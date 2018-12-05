@@ -1,3 +1,85 @@
+def made_readable_df(probas, labels=None, index=None):
+    import pandas as pd
+    
+    df = pd.DataFrame(probas).applymap(lambda x: '%.3f' % x)
+
+    if labels:
+        df.columns = labels
+    if index:
+        df.index = map(lambda x: x.split('/')[-1].replace('_face.jpg',''), index)
+    return df
+
+def get_multi_label_roc_score(input_labels, X, instatiated_clf):
+    '''
+    DO NOT labeled 1,0 if so just change it to string instead of int
+    
+    I: labels (pd.Series), Feature matrix (DataFrame), classifier 
+    O: weighted average roc auc score of all labels
+
+    Each class is first binarized and scored stepe-wise. 
+    Then it calculates the weighted average roc auc for each class.
+    '''
+    from sklearn.cross_validation import StratifiedKFold, cross_val_score    
+    import numpy as np
+
+    output_list = []
+    all_class_labels = dict(input_labels.value_counts(1))
+    for label_tag in all_class_labels.keys():
+
+        # binarize labels
+        temp_label = input_labels.copy()
+        
+        # this sequence matters
+        temp_label[temp_label != label_tag] = 0
+        temp_label[temp_label == label_tag] = 1
+        Y_train = np.asarray(temp_label, dtype=int)
+
+        # score
+        skf = StratifiedKFold(Y_train, n_folds=10, shuffle=False)
+        scores = cross_val_score(instatiated_clf, X, Y_train, cv=skf, scoring='roc_auc')
+        output_list.append((all_class_labels[label_tag], scores.mean()))
+    
+    return sum([weight*score for weight, score in output_list])
+
+def score_classifier(clf, feature_M, labels, class_imbalance=True):
+    from sklearn.cross_validation import StratifiedKFold, cross_val_score    
+    import numpy as np
+
+    
+    #scoring mechanism
+    if class_imbalance:
+        skf = StratifiedKFold(labels, n_folds=10, shuffle=True)
+    
+    #put the else here for non-strat
+    scores_for_each_fold = cross_val_score(
+        clf, 
+        feature_M, 
+        labels, 
+        cv=skf, 
+        scoring='roc_auc'
+    )
+    
+    median = np.median(scores_for_each_fold)
+    mean = np.mean(scores_for_each_fold)
+    std = np.std(scores_for_each_fold)
+    
+    return mean, median, std, scores_for_each_fold
+
+
+def append_new_dataset(orig_paths, orig_encodings, orig_arrays_rescaled, orig_X, newpath):
+    import numpy as np
+
+    data_, paths_, encodings_, arrays_rescaled_, X_ = load_encodings(newpath)
+
+    new_arrays_rescaled = orig_arrays_rescaled + arrays_rescaled_ 
+    new_encodings = orig_encodings + encodings_ 
+    new_paths = orig_paths + paths_
+    new_X = np.concatenate((orig_X, X_))
+
+    print (len(new_encodings), len(new_paths), len(new_arrays_rescaled), new_X.shape[0])
+
+    return new_paths, new_encodings, new_arrays_rescaled, new_X
+
 def find_the_closest_pts(encodings, arrays_rescaled, data_pt, top_x=5):
     import pandas as pd
     import numpy as np
@@ -41,7 +123,7 @@ def display_cluster_montages(cluster_labels, arrays_rescaled, rating_dic=None):
 
 
 def _square_sizer(val):
-    for x, y in [(4,4), (3, 3), (2,2), (2,1)]: 
+    for x, y in [(10,10), (6,6), (5,5),(4,4), (3, 3), (2,2), (2,1)]: 
         if val == (x * y):
             return x, y
         if val > x * y :
@@ -74,19 +156,25 @@ def montagify_indices(data, colors_dic, ratings_set={1,2}):
     return montagify(faces, (96, 96), (10, 10))
 
 def load_encodings(file_name):
+    '''
+    I: pickled images
+    O: raw_data, paths, encodings, arrays_rescaled, X
+    '''
     import pickle
     import numpy as np
     from tsne import rescaler
-    data = np.array(pickle.loads(open(file_name, "rb").read()))
-    paths = [d['imagePath']  for d in data]
-    encodings = [d["encoding"] for d in data]
+    raw_data = np.array(pickle.loads(open(file_name, "rb").read()))
+    paths = ['../data/' + d['imagePath']  for d in raw_data]    
+    # paths = [d['imagePath']  for d in raw_data]    
+    encodings = [d["encoding"] for d in raw_data]
+
     arrays_rescaled = list(map(rescaler, paths))
     X = np.array(list(map(lambda x: np.array(np.array(x, dtype=np.float32)), arrays_rescaled)))
 
-    return data, paths, encodings, arrays_rescaled, X
+    return raw_data, paths, encodings, arrays_rescaled, X
 
 
-def map_colors_to_ratings(colors_dic, encodings, colors_pal):
+def map_colors_to_ratings_tsne(colors_dic, encodings, colors_pal):
     from sklearn.manifold import TSNE
 
     params = {
@@ -111,6 +199,34 @@ def map_colors_to_ratings(colors_dic, encodings, colors_pal):
             lis.append(colors_pal[0])
 
     return tsne_embeddings, xx, yy, lis
+
+def map_colors_to_ratings_UMAP(colors_dic, encodings, colors_pal, params=None):
+    from umap import UMAP
+    if not params:
+        params = {
+            #5 to 50, with a choice of 10 to 15 being a sensible default.
+            "n_neighbors":5,
+            #0.001 to 0.5, with 0.1 being a reasonable default.
+     
+            "min_dist":0.1,
+
+            #metric: This determines the choice of metric used to measure distance in the input space. 
+            "metric":'euclidean'
+        }
+
+    umap_embeddings = UMAP(**params).fit_transform(encodings)
+
+    xx = umap_embeddings[:, 0]
+    yy = umap_embeddings[:, 1]
+
+    lis=[]
+    for depth in colors_dic:
+        if depth: 
+            lis.append(colors_pal[depth - 1])
+        else:
+            lis.append(colors_pal[0])
+
+    return umap_embeddings, xx, yy, lis
 
 
 

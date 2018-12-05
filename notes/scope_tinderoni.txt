@@ -1,140 +1,142 @@
-Scope for tinderoni
--------------------
 
 
 use-cases
 ---------
+- kiddy porn finder 
+- Scarlett's variance of results demonstrated, make-up has a huge role so if one wanted to conform to certain standard in beauty they could by making their face more define and then taking a photo of it. This solves that problem of: Did I put my make-up on right
+
 - talent scout
+
 - self-esteem booster
+
 - data insights for daters people
 	- self-awareness of the types of demographics who appeal to me
 	- the type of people I'm interested in
+
 - creating a simple auto-swiper
-* which star do you look most similar to? Do i actually look most similar to george clooney?
+
+- which star do you look most similar to? Do i actually look most similar to george clooney?
+
 Could also use my RT recommender for this.
 - if you were a movie producer and you were looking for a cast member
 
 Have you ever had a crush on a girl? or would you care to see how your past partners line-up to your current set of likes?
 - Use the recommender
 
-
 What would be even MORE interesting is to examine the set of people that actually match with you and distinguish those people from the broader group?
 - However, I wouldn't be too hard on yourself. This would be a fun insightful exercise but i don't match. There are lots of variables in place other than they just don't find me attractive.
 
+*RECOMMENDER: if i wanted to choose a good face shot of myself I'd iterate through my reel and choose the ones that falls in the same quadrant as the stars
 
+- stop toilet paper thieves
+- authentication, like a fingerprint... but there's not touching involved, garauntees uniqueness in this case
+- pet identification if it's lost
+- customization, say if you hop into a car and adjusts your seat, mirrors, etc
+- image touch-ups and corrections
+- VR could put me in a whole new working environment 
+- Banks and ATMS could definitely use facial recognition
+- Concentration levels of the face
+- Given my face, can i figure out which faces I'm attracted to the most? (figure out where my face cluster)
+- Are the people happy / sad?
+- shoplifting, general happiness or mood of shoppers
+- lie detection
+- physical abuse
+- payments
+- Pricing and anything that uses human eye inspection
+- Is my cut infected?
+- Nude detection
+- Self driving cars
+- recommendor My favorite pornstars, 
+- Am I more caucasian or Happa?
 
 
 
 todos
 ----
+- make random grid search function
+- Correlation of body and faces: Fit classifier to attractive faces and predict on the tinder pics to see if there's a true correlation.
+- fit XGB to the voting committee
+- Are my likes around my age range? age of pictures?
+- Beef up LR
+- make random grid search function
+- debug the controversial part of the voting committee script 
+- note: running umap optimial KNN settings; correlation and nieghbors = 1
+- fleshout the pose todo a bit more
+- Look for BMI correlation
+- See how easy it would be to use BodyNet
+- double check between tinder caucasians, if I can isolate for just caucasians
+- note image augmentation practices for next steps
+- sarah jessica parker vs scarlet johansen: umap
+- check whether or not it transforms image to b / w, is skin color involved?
 
-#get only the first pic from dislikes DONE
+	- It's the about algo fairness which is why these dating app companies probably have such a hard time 
 
-#take the first face from tinder_pics_likes_faces_deduped DONE
+	- highlight the technique for forming cluster descriptions
 
-#label the likes/dislikes and umap, see if they're different from one another
-
-#hdbscan / umap for CF_males and
-#add stars to this
-#inspect imdb set and make recommender
-
-#try clustering with GMM
-
-#try cosinels DONE
-
-
-
-
-
-dislikes
-------
-- extract faces and align DONE
-- get only the first photo DONE
-- dedupe; spin up a big cluster and do it 
-- encode; find an easy way to provision the cluster; try EMR route
-
-
-likes
-------
-- get only the first photo
-- encode
-
-
-likes (from last year)
-------
-- dedupe
-- extract faces and align
-- get only the first photo
-- encode
-
-do the dissimilarity for the AF and CFs, TSNE
-
-- which start is raq closest to?
+	- preprocess, hdbscan / umap for last years likes; see if there's any overlap with this year.
+	- Can I capture body shape? look-up bodynet
+	- text analysis
+	
+	- hdbscan / umap for CM and AM; see if justin / jamie fall; add stars to this
+	- come-up with UMAP/TSNE principle: consistency, sensible from the eye, pre-determined outliers run
+	
+	DONE
+	- label the likes/dislikes and umap, see if they're different from one another
+	- Women I've dated
+	- dedupe tinder_pics_dislikes_faces_firsts
+	- encode tinder_pics_dislikes_faces_firsts_deduped
+features
+-------
+	- angry, 
+	- sad, 
+	- happy
+	- BMI :https://towardsdatascience.com/how-attractive-are-you-in-the-eyes-of-deep-neural-network-3d71c0755ccc
 
 
-CM dataset notes
+CM dataset notes (purge this to notebook)
 -----
 
-- get photos of mike and jamie and do the same exercise
+	- get photos of mike and jamie and do the same exercise
 
-note cm688 is an indian guy
-
-*if i wanted to choose a good face shot of myself I'd iterate through my reel and choose the ones that falls in the same quadrant as the stars
-- check if the tsne plots were done on the face and not just the encodings of the entire pic
-- see what clusters I get with HDScAN? DONE
-- run on likes and dislikes? does it find fat girls?
-- understand what's going on with the ecoding and see if we could extract features from them
-- hypothesis tests: see where raquel lands among the set of models and uggs, lets find a fat girl and see what happens? 
-
-- inspecting the montages of the hots and nots, what main pattern can we see? same for tsne plots. audrey hepburn and madonna? Why are some hots in the nots and vice versa? Is there a way to extract these features? Where would mom fall? where would raquel fall? where would I fall?
-- organize folder
-- play around with the perplexity at 10: it seems to be cluster like pictures better at 10 than it does at 30 but it's also more splayed out and scattered losing it's ellipsodal shape. that website claims that tsne sucks for doing this but I see it more like highlighting a pair of similar points instead for visual inspection instead of having everything look equidistant. take a glance at the jpegs in the tsne trial folder. The associations with perp 10 look much more clear
-
-- come-up with a principled way to examine goodness of approach e.g. pre-determined outliers where do they lie, does it catch all of the same people, I could literally go through the entire set and swipe on them again effectively relabel them and make a roc-auc curve.
+	note cm688 is an indian guy
 
 DONE
-- examine cluster and try to optimize the cluster.. consider level set tree, t-sne, etc. perhaps it might even make sense to send out an email to adrian
-- train the model on facial beauty and try to get the one on fatness
-- faces need to be aligned
-- do we need to encode the faces into a feature space before we feed them to a clustering algorithm? check by flatten rgb and using it on the faces to see if it yields similar results
-- also use HDSCANN
-- t-SNE on the encodings
-- how can i understand global structure
-- validation of a clustering algorithm can be validated by the linkage to the names of the files and clusters e.g. cluster_1 corresponding file names should have the same name.
- 
+	- try cosinels DONE
+	- get only the first pic from dislikes DONE
+	- take the first face from tinder_pics_likes_faces_deduped DONE
+	likes
+	------
+	- get only the first photo
+	- encode
+
+	dislikes
+	------
+	- extract faces and align DONE
+	- get only the first photo DONE
+	- dedupe; 
+	- encode; find an easy way to provision the cluster; try EMR route
+
+	- check if the tsne plots were done on the face and not just the encodings of the entire pic DONE
 
 
 - Mine data 
 	
 	- What data do we need?
 		
+		text features
+		----
+		- line count
 		- distance
 		- age
 		- name
 		- schools
 		- jobs
 		
-		text
-		----
 		- Profile blog
 		- especially height
 
-		images
-		-----
-		- positive labels for sure
-			- analysis
-				- keep an eye fr Linnette and see if she's an outlier or does she blend in
-			- training a classifier
-			- how many images do I need? *
-			- what resolution? *
-		- negative labels? 
-			- anlaysis purposes
 
-- Which classifiers? *
-	- Facenet
-	- convnet
-
-- Analysis
+- Questions Analysis
 	How many group photos on average does each person have?
 		this probably not good for figuring who you are
 
@@ -203,88 +205,15 @@ DONE
 	Anyways, the main point speaks to your selectivity: Am I being realistic with my desires? Am I overappraising my self-worth? Am I not being selective enough, casting too wide a net?
 
 
-- What's an objective measure for what is considered attractive?
+	- What's an objective measure for what is considered attractive? How can I figure 
 
+	- Purge to NB Why is this less interesting then finding a neighborhood
 
-- App
 	1) pull down nearest matches
 	2) classify which ones you said yes to automonously
 		- is it important to say dislike in tinder?
 
-tasks
------
-
-
-1) can I link the images and the pictures?
- 
-
-2) 
-
-
-
-2) Research 
-
-	- How do you objectively measure attractiveness visually? (2 hours)
-		
-		- Can i use conv nets to uncover latent patterns within the pictures?
-		- How figure out patterns after we have all this data?
-	
-	- What are popular ways for topics modeling? (6 hours)
-		- send Andy a message.
-		- review Brentons thing
-			- send him a message about 
-				- topic modeling on seasons
-				- resources for topic modeling
-				- influx of users by seasons
-
-	- Facenet: (1.5 hour)
-		How to crop out the face?
-			https://github.com/opencv/opencv
-		What resolution
-		How many images do I need
-		Will I need AWS to support the training
-
-	- What do I need to do mine form Happn? OKC? (30 mins)
-	- other computer vision models? (30 mins)
-
-- Setup infrastructure to mine data (30 mins)
-	Append these fields to CSV which is pipe delimited
-	- start collecting bio, 
-	- distance, 
-	- Age
-	- School
-	- Jobs
-	- names from Tinder
-- can i reiterate on the above? i.e. look at the information collected and see what we could clean from it. All while continuing to collect
-- fix the error: KeyError: 'id' 
-- organize folders
-- make a function to collect likes and dislikes
-- start collecting swipes
-- make a last year folder
-- How many images do I need?
-
-ideas
-----
-- train the model on my pics
-- to show a scatter plot of the images just censor the eyes to avoid identification
-- object detection within the photos
-	https://techcrunch.com/2017/06/16/object-detection-api/
-- fat person detector on the positives and negatives
-	https://thestack.com/big-data/2017/03/10/computer-vision-research-aims-to-identify-overweight-people-from-social-media-face-photos/
-
-resource
---------
-https://www.oscaralsing.com/automated-tinder-using-artificial-intelligence/
-https://en.wikipedia.org/wiki/List_of_datasets_for_machine_learning_research#Image_data
-https://github.com/awesomedata/awesome-public-datasets#imageprocessing
-https://distill.pub/2017/feature-visualization/
-
-
-random qs
-----
-is t-SNE no longer the best clustering algo?
-
-
+	- Find a way to link pictures and text, finding a correlation between pictures and text
 
 notes
 ----
@@ -311,6 +240,69 @@ Also lets see what the scatter plot looks like
 http://archive.ics.uci.edu/ml/datasets/cmu+face+images
 http://www.robots.ox.ac.uk/~vgg/data/vgg_face/
 
+
+Representation of gods
+-----------------------
+
+	This findings came about when I noticed a facial similarity between my mom / family and the gods.
+
+	Separately, the connection with hindu gods; Most of the gods are depicted as blue or fair skinned and appear to be very north indian looking by features. Big eyes, eye lashes, narrow nose - Aryan features ( indo aryan to be precise ). This is in stark contrast to south indians who have wider noses and thicker lips. Today, there's still a preference for fair skin in indian media.
+
+	I'm in nepal now where people look far different and they're even praying to pictures which portray a north indian person. How is this different from american media where whites govern the standards of aesthetics and parade physical ideals of their definition around us. 
+
+	How did buddha become a fat jovial chinese guy? He clearly was a skinny indian guy?
+
+	Assumption: The net is using facial structure and not skin color.
+
+	Is what's popular choice even matter any more? If it's all made-up and become synthetically popularized and the in a cycle of habit, who cares?
+
+
+Should women use apps like tinder?
+	- I think swiping caters more towards men. Meaning you very well could be attracted to someone physically but not have compatible personalities. This a balance dating apps are struggling with.
+	- if it's purely measured on looks then it's much more analogous to how men choose to pursue a mate. Why are men more visually stimulated is a deeper topic.
+
+	What happens if my likes are scattered and don't show any pattern?
+	- you may just be indifferent to looks, maybe more weight towards physiological features.
+
+What do I do with this information?
+	- don't use it to feed your swipe pattern, given how selective I hardly match besides, it's not just me or you, it's the app. Inspecting another analysis of who was fairly rigorous a 2.6 match rate is hardly worth your time. 
+	- So what then should I do? Figure out your type and next time you come across someone like that cold approach her. or and this is what tinder probably angling for, buy some of there extras like stars but now youre fairly informed on who you should focus your resources on ( that's the big takeaway. Because you can't approach every girl and even though you can swipe right on everyone indiscriminately you can't have a genuine conversation with everyone with you match with. This a clear way to be more efficient with your efforts. 
+	- The the average person in your clusters
+	- your ethnic clusters
+	- Your demographic ( tbd )
+	- while it may reaffirm something you already know it's nice to have it back by analysis. It's nice to know your type. 
+
+I like all types of women given they're beautiful
+	- well what's beautiful? doll face or structured, petite or voluptuous, mainstream... laid back or type a (This exercise can only be done with a personality analysis). Though pic are worth a thousand words, we can just limit to physique for this exercise. Beauty is a fairly subjective topic so an analysis like this might be worth while.
+
+
+This isn't intended for an audience who is just looking to get laid. It's much more about meeting someone for the long term.
+
+Mainstream or controversial?
+	- it also uncovers how close my type is to mainstream good looks or outside* 
+
+Link to the gaurdian video on the racism in dating apps
+	- I wonder if this is also the case in practice or only if the user is offered the option like on OKC.
+	- The golden standard of beauty derives fron American standards of good looks and then paraded around us on billboards media, etc. So when compared to other ethnicities people often fall short. Small narrow upturned nose, fair skin, height, blonde straight hair, round eyelids. Just take a look at the types of cosmetic surgeries offered in Asian countries surgeries like Japan where they've demonstrated a mild American obsession. In contrast, black features are the opposite, wide nose, dark skin, bushy hair. 
+	- much of this stuff is kinda make believe for example Hugh hefner popularized because of his own personal preference and today blondes are the standard of all American beauty just a look at the number of women who dye thier hair to look blonde
+	- also it's region specific, don draper vs some beachy star, would have better odds. Things aren't static. Experiment around to see what region is better for you, bring up Sa and na racism. 
+
+Dating advice Reddit. Can I get a breakout of ethnicities?
+
+If the odds aren't in my favor is all lost?
+	- grit quote
+	- suboptimality not an impediment
+	- women said to be more psychologocal driven
+
+
+Advice
+-----
+Don't rush: to be original you don't have to be first, you just have to be different and better. more time to expand creative process thought
+	don't ever self-doubt, it's the antithesis to self-confidence. 
+		always isolate to the specific event
+	first movers often fail the most: napster, myspace, altavista
+
+
 Potential audience and directional notes from quora
 ------------------
 How the encoding works for Facial Recognition vs FaceNet (cutting edge)?
@@ -319,45 +311,10 @@ How the encoding works for Facial Recognition vs FaceNet (cutting edge)?
 	the network has already been trained to create 128-d embeddings on a dataset of ~3 million images.
 	- Facenet's supposed to be the best out there and probably should be used in the final version of this. But it's for a later iteration.
 
+
 Best way to Dl images?
 	- bing search api from pyimagesearch
 
-use-cases
-STOP TOILET PAPER THIEVES
-- authentication, like a fingerprint... but there's not touching involved, garauntees uniqueness in this case
-- pet identification if it's lost
-- customization, say if you hop into a car and adjusts your seat, mirrors, etc
-- image touch-ups and corrections
-- VR could put me in a whole new working environment 
-- Banks and ATMS could definitely use facial recognition
-- Concentration levels of the face
-- Given my face, can i figure out which faces I'm attracted to the most? (figure out where my face cluster)
-- Are the people happy / sad?
-- shoplifting, general happiness or mood of shoppers
-- lie detection
-- physical abuse
-- payments
-- Pricing and anything that uses human eye inspection
-- Is my cut infected?
-- Nude detection
-- Self driving cars
-
-features
--------
-- angry, 
-- sad, 
-- happy
-
-
-My favorite pornstars, recommendor
-
-- Don't rush: to be original you don't have to be first, you just have to be different and better. more time to expand creative process thought
-	- don't ever self-doubt, it's the antithesis to self-confidence. 
-		- always isolate to the specific event
-	- first movers often fail the most: napster, myspace, altavista
-
-Quora
-======
 - There definitely was a correlations between the most thoughtful answers to popular questions
 
 What are the best Tinder hacks?
@@ -383,27 +340,6 @@ What are the universal laws of attraction?
 Men one's that are more concerned with looks, as such the article will probably cater to men however there's a sense of individual expression through photos, afterall they're worth a 1000 words. 
 
 Suggestions on where to go based on your use case? to flat out say Tinder < Bumble << OKC is kind of short-sighted to their individual use-case. 
-
-PACKAGES
-========
-features on images?
-
-	emotions
-	https://github.com/oarriaga/face_classification?utm_source=mybridge&utm_medium=blog&utm_campaign=read_more
-
-	real and fake smile CNN
-
-	https://zapdf.com/discriminating-real-from-fake-smile-using-convolution-neural.html
-
-	- What do people say about it's attractiveness rating in terms of labels
-	- Measuring the true impact of a movie scene or work of art
-
-	This is just the beginning, to using ML to empathetical insight to images... that might be the next major step.
-
-	- BMI
-
-
-
 
 What are the most popular questions & answers in online dating?
 
@@ -445,6 +381,29 @@ What are the most popular questions & answers in dating?
 
 Dating is hard, there are girls I have nothing in common with but I want to have sex with them and there are girls I have a lot in common with but I don't want to have sex with them at all: how can we find the intersection.
 
+PACKAGES
+========
+features on images?
+
+	emotions
+	https://github.com/oarriaga/face_classification?utm_source=mybridge&utm_medium=blog&utm_campaign=read_more
+
+	real and fake smile CNN
+
+	https://zapdf.com/discriminating-real-from-fake-smile-using-convolution-neural.html
+	https://www.thoughtworks.com/insights/blog/recognizing-human-facial-expressions-machine-learning
+
+	- What do people say about it's attractiveness rating in terms of labels
+	- Measuring the true impact of a movie scene or work of art
+
+	This is just the beginning, to using ML to empathetical insight to images... that might be the next major step.
+
+	- BMI: https://towardsdatascience.com/how-attractive-are-you-in-the-eyes-of-deep-neural-network-3d71c0755ccc
+
+	- facebeautifier
+	https://github.com/Guikunzhi/BeautifyFaceDemo
+	https://www3.nd.edu/~kwb/Bharati_Singh_Vatsa_Bowyer_TIFS_2016.pdf
+
 
 aws tools
 =========
@@ -454,6 +413,3 @@ https://docs.aws.amazon.com/sagemaker/latest/dg/tf-examples.html
 https://github.com/apache/incubator-mxnet/tree/master/example/image-classification
 https://docs.aws.amazon.com/sagemaker/latest/dg/image-classification.html
 
-face-to_bmi
------------
-https://towardsdatascience.com/how-attractive-are-you-in-the-eyes-of-deep-neural-network-3d71c0755ccc
