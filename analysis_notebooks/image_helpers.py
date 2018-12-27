@@ -1,3 +1,22 @@
+def find_closest_line(num_of_examples, df):
+    calc_euclidean_dist = lambda x,y: ((x[0]-y[0])**2 + (x[1]-y[1])**2)**0.5
+
+    def find_the_closest_pt(pt, line):
+        dists = [calc_euclidean_dist(line_pt, pt) for line_pt in line] 
+        return line[np.argmin(dists)]
+
+    def find_the_closest_distance(pt, line):
+        dists = [calc_euclidean_dist(line_pt, pt) for line_pt in line] 
+        return np.min(dists)
+
+    ideal_line = np.array([(x, x) for x in range(num_of_examples)])
+    closest_pts_on_line = np.array([find_the_closest_pt(df.iloc[i], ideal_line) for i, pt in enumerate(ideal_line)])
+    closest_errors = np.array([find_the_closest_distance(df.iloc[i], ideal_line) for i, pt in enumerate(ideal_line)])
+
+    return ideal_line, closest_pts_on_line, closest_errors
+
+
+
 def made_readable_df(probas, labels=None, index=None):
     import pandas as pd
     
